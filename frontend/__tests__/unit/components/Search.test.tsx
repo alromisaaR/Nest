@@ -1,5 +1,5 @@
 import { sendGTMEvent } from '@next/third-parties/google'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { useShouldAutoFocusSearch } from 'hooks/useShouldAutoFocusSearch'
 import SearchBar from 'components/Search'
 
@@ -33,6 +33,7 @@ describe('SearchBar Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    localStorage.clear()
     ;(useShouldAutoFocusSearch as jest.Mock).mockReturnValue(true)
     jest.useFakeTimers()
   })
@@ -100,7 +101,9 @@ describe('SearchBar Component', () => {
 
       expect(input).toHaveValue(initialValue)
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
       expect(mockOnSearch).not.toHaveBeenCalled()
       expect(sendGTMEvent).not.toHaveBeenCalled()
@@ -150,7 +153,9 @@ describe('SearchBar Component', () => {
 
       expect(mockOnSearch).not.toHaveBeenCalled()
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
       expect(mockOnSearch).toHaveBeenCalledWith('test')
     })
@@ -161,7 +166,9 @@ describe('SearchBar Component', () => {
       fireEvent.change(input, { target: { value: 'test' } })
       expect(input).toHaveValue('test')
       const clearButton = screen.getByRole('button', { name: 'Clear search' })
-      input.blur()
+      act(() => {
+        input.blur()
+      })
       // NOSONAR: Verifies input lost focus before testing refocus behavior
       expect(input).not.toHaveFocus()
       fireEvent.click(clearButton)
@@ -189,12 +196,16 @@ describe('SearchBar Component', () => {
 
       expect(mockOnSearch).not.toHaveBeenCalled()
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
       expect(mockOnSearch).toHaveBeenCalledWith('test')
 
       fireEvent.change(input, { target: { value: 'phase' } })
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
       expect(mockOnSearch).toHaveBeenCalledWith('phase')
     })
@@ -213,7 +224,9 @@ describe('SearchBar Component', () => {
 
       fireEvent.change(input, { target: { value: 'test' } })
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
       expect(sendGTMEvent).toHaveBeenCalledWith({
         event: 'search',
@@ -231,7 +244,9 @@ describe('SearchBar Component', () => {
       fireEvent.change(input, { target: { value: 'new query' } })
 
       expect(input).toHaveValue('new query')
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
       expect(mockOnSearch).toHaveBeenCalledWith('new query')
       expect(sendGTMEvent).toHaveBeenCalledWith({
         event: 'search',
@@ -242,7 +257,9 @@ describe('SearchBar Component', () => {
       fireEvent.change(input, { target: { value: 'change query' } })
 
       expect(input).toHaveValue('change query')
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
       expect(mockOnSearch).toHaveBeenCalledWith('change query')
       expect(sendGTMEvent).toHaveBeenCalledWith({
         event: 'search',
@@ -347,7 +364,9 @@ describe('SearchBar Component', () => {
       const clearButton = container.querySelector('button.absolute.rounded-md[class*="right-2"]')
       fireEvent.click(clearButton)
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
       expect(mockOnSearch).toHaveBeenCalledTimes(1)
       expect(mockOnSearch).toHaveBeenCalledWith('')
@@ -362,9 +381,11 @@ describe('SearchBar Component', () => {
 
       fireEvent.change(input, { target: { value: '   ' } })
 
-      jest.advanceTimersByTime(750)
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
 
-      expect(mockOnSearch).toHaveBeenCalledWith('   ')
+      expect(mockOnSearch).toHaveBeenCalledWith('')
       expect(sendGTMEvent).not.toHaveBeenCalled()
     })
   })
@@ -440,7 +461,29 @@ describe('SearchBar Component', () => {
       render(<SearchBar {...defaultProps} isLoaded={true} />)
       const input = screen.getByPlaceholderText('Search projects...')
       expect(input).toHaveClass(
-        'box-border h-12 w-full rounded-lg border-1 border-gray-300 bg-white py-0 pr-10 pl-10 text-sm leading-12 text-black placeholder:leading-12 placeholder:text-gray-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:ring-blue-300'
+        'box-border',
+        'h-12',
+        'w-full',
+        'rounded-lg',
+        'border-1',
+        'border-gray-200',
+        'bg-white',
+        'py-0',
+        'pr-10',
+        'pl-10',
+        'text-sm',
+        'leading-12',
+        'text-black',
+        'placeholder:leading-12',
+        'placeholder:text-gray-500',
+        'focus:ring-1',
+        'focus:ring-blue-500',
+        'focus:outline-hidden',
+        'dark:border-gray-600',
+        'dark:bg-gray-800',
+        'dark:text-white',
+        'dark:placeholder:text-gray-400',
+        'dark:focus:ring-blue-300'
       )
     })
 
@@ -470,7 +513,7 @@ describe('SearchBar Component', () => {
       render(<SearchBar {...defaultProps} isLoaded={true} />)
       const input = screen.getByPlaceholderText('Search projects...')
       const searchIcon = document.querySelector(
-        String.raw`svg.pointer-events-none.absolute.left-3.top-1\/2.h-4.w-4.-translate-y-1\/2.text-gray-400`
+        String.raw`svg.pointer-events-none.absolute.left-3.top-6.h-4.w-4.-translate-y-1\/2.text-gray-400`
       )
 
       expect(input).toBeInTheDocument()
@@ -501,6 +544,189 @@ describe('SearchBar Component', () => {
       const { container } = render(<SearchBar {...defaultProps} isLoaded={true} />)
       const wrapper = container.firstChild as HTMLElement
       expect(wrapper).toHaveClass('md:py-4')
+    })
+  })
+
+  describe('Recent searches functionality', () => {
+    it('saves search query to custom storageKey after debounce delay', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: 'project1' } })
+      expect(localStorage.getItem('recentSearchResults:projects')).toBeNull()
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([
+        'project1',
+      ])
+    })
+
+    it('shows recent searches on focus when input is empty and hides when typing', () => {
+      localStorage.setItem('recentSearchResults:projects', JSON.stringify(['zap', 'juice-shop']))
+
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+      fireEvent.focus(input)
+      expect(screen.getByText('Recent:')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'zap' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'juice-shop' })).toBeInTheDocument()
+
+      fireEvent.change(input, { target: { value: 'z' } })
+      expect(screen.queryByText('Recent:')).not.toBeInTheDocument()
+    })
+
+    it('selects a recent search on mouseDown and triggers onSearch immediately', () => {
+      localStorage.setItem('recentSearchResults:projects', JSON.stringify(['zap', 'juice-shop']))
+
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+      fireEvent.focus(input)
+      const itemButton = screen.getByRole('button', { name: 'juice-shop' })
+      fireEvent.mouseDown(itemButton)
+
+      expect(input).toHaveValue('juice-shop')
+      expect(mockOnSearch).toHaveBeenCalledWith('juice-shop')
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([
+        'juice-shop',
+        'zap',
+      ])
+    })
+
+    it('removes a recent search when remove button is clicked', () => {
+      localStorage.setItem('recentSearchResults:projects', JSON.stringify(['zap', 'juice-shop']))
+
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+      fireEvent.focus(input)
+      const removeButton = screen.getByRole('button', { name: 'Remove zap' })
+      fireEvent.mouseDown(removeButton)
+
+      expect(input).toHaveValue('')
+      expect(mockOnSearch).not.toHaveBeenCalledWith('zap')
+
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([
+        'juice-shop',
+      ])
+    })
+
+    it('does not add empty or whitespace-only queries to recent searches', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: '   ' } })
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([])
+
+      fireEvent.change(input, { target: { value: '' } })
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([])
+    })
+  })
+
+  describe('Search query validation and error feedback', () => {
+    it('shows validation message and blocks search/storage/GTM for invalid characters', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: 'project@123' } })
+
+      expect(
+        screen.getByText(
+          'Only letters, numbers, spaces, hyphens, underscores, and periods are allowed.'
+        )
+      ).toBeInTheDocument()
+
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+
+      expect(mockOnSearch).not.toHaveBeenCalledWith('project@123')
+      expect(localStorage.getItem('recentSearchResults:projects')).toBeNull()
+    })
+
+    it('hides validation message when input is cleared or becomes valid', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: '@@@' } })
+      expect(
+        screen.getByText(
+          'Only letters, numbers, spaces, hyphens, underscores, and periods are allowed.'
+        )
+      ).toBeInTheDocument()
+
+      fireEvent.change(input, { target: { value: 'valid-project_1' } })
+      expect(
+        screen.queryByText(
+          'Only letters, numbers, spaces, hyphens, underscores, and periods are allowed.'
+        )
+      ).not.toBeInTheDocument()
+
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+      expect(mockOnSearch).toHaveBeenCalledWith('valid-project_1')
+    })
+
+    it('accepts periods in the query and triggers onSearch with it', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: 'OWASP.JAPAN' } })
+
+      expect(
+        screen.queryByText(
+          'Only letters, numbers, spaces, hyphens, underscores, and periods are allowed.'
+        )
+      ).not.toBeInTheDocument()
+
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+
+      expect(mockOnSearch).toHaveBeenCalledWith('OWASP.JAPAN')
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([
+        'OWASP.JAPAN',
+      ])
+    })
+
+    it('does not show validation message for whitespace-only input', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: '   ' } })
+
+      expect(
+        screen.queryByText(
+          'Only letters, numbers, spaces, hyphens, underscores, and periods are allowed.'
+        )
+      ).not.toBeInTheDocument()
+    })
+
+    it('calls onSearch with empty string when input is cleared via keyboard', () => {
+      render(<SearchBar {...defaultProps} storageKey="recentSearchResults:projects" />)
+      const input = screen.getByPlaceholderText('Search projects...')
+
+      fireEvent.change(input, { target: { value: 'zap' } })
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+
+      expect(mockOnSearch).toHaveBeenCalledWith('zap')
+
+      fireEvent.change(input, { target: { value: '' } })
+      act(() => {
+        jest.advanceTimersByTime(750)
+      })
+      expect(mockOnSearch).toHaveBeenLastCalledWith('')
+      expect(JSON.parse(localStorage.getItem('recentSearchResults:projects') || '[]')).toEqual([
+        'zap',
+      ])
     })
   })
 })

@@ -725,7 +725,7 @@ describe('GlobalSearch', () => {
     fireEvent.click(screen.getByLabelText('Open search'))
 
     const input = screen.getByPlaceholderText('Search the OWASP community...')
-    await userEvent.type(input, 'React.JS')
+    await userEvent.type(input, 'React@JS')
     fireEvent.keyDown(input, { key: 'Enter' })
 
     unmount()
@@ -737,7 +737,7 @@ describe('GlobalSearch', () => {
       expect(screen.getByText(EMPTY_STATE_EXAMPLES)).toBeInTheDocument()
     })
     expect(screen.queryByText('Recent Searches')).not.toBeInTheDocument()
-    expect(screen.queryByText('React.JS')).not.toBeInTheDocument()
+    expect(screen.queryByText('React@JS')).not.toBeInTheDocument()
   })
 
   test('sends a GA event when typing a valid non-empty query', async () => {

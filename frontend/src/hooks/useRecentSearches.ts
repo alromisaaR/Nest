@@ -3,12 +3,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { MAX_RECENT_SEARCHES } from 'utils/searchConstants'
 
-const useRecentSearches = () => {
+const DEFAULT_STORAGE_KEY = 'recentSearchResults'
+
+const useRecentSearches = (storagekey: string = DEFAULT_STORAGE_KEY) => {
   const [recentSearchResults, setRecentSearchResults] = useState<string[]>([])
 
   useEffect(() => {
     try {
-      const savedResults = localStorage.getItem('recentSearchResults')
+      const savedResults = localStorage.getItem(storagekey)
       if (savedResults) {
         const parseResults = JSON.parse(savedResults)
         if (Array.isArray(parseResults) && parseResults.every((item) => typeof item === 'string')) {
@@ -18,19 +20,22 @@ const useRecentSearches = () => {
     } catch {
       // Ignore errors related to localStorage access or JSON parsing
     }
-  }, [])
+  }, [storagekey])
 
-  const setRecentSearch = useCallback((updater: string[] | ((prev: string[]) => string[])) => {
-    setRecentSearchResults((prev) => {
-      const next = typeof updater === 'function' ? updater(prev) : updater
-      try {
-        localStorage.setItem('recentSearchResults', JSON.stringify(next))
-      } catch {
-        // Ignore errors related to localStorage access
-      }
-      return next
-    })
-  }, [])
+  const setRecentSearch = useCallback(
+    (updater: string[] | ((prev: string[]) => string[])) => {
+      setRecentSearchResults((prev) => {
+        const next = typeof updater === 'function' ? updater(prev) : updater
+        try {
+          localStorage.setItem(storagekey, JSON.stringify(next))
+        } catch {
+          // Ignore errors related to localStorage access
+        }
+        return next
+      })
+    },
+    [storagekey]
+  )
 
   const addRecentSearch = useCallback(
     (query: string) => {
@@ -48,17 +53,20 @@ const useRecentSearches = () => {
     [setRecentSearch]
   )
 
-  const removeRecentSearch = useCallback((query: string) => {
-    setRecentSearchResults((prev) => {
-      const next = prev.filter((item) => item !== query)
-      try {
-        localStorage.setItem('recentSearchResults', JSON.stringify(next))
-      } catch {
-        // Ignore errors related to localStorage access
-      }
-      return next
-    })
-  }, [])
+  const removeRecentSearch = useCallback(
+    (query: string) => {
+      setRecentSearchResults((prev) => {
+        const next = prev.filter((item) => item !== query)
+        try {
+          localStorage.setItem(storagekey, JSON.stringify(next))
+        } catch {
+          // Ignore errors related to localStorage access
+        }
+        return next
+      })
+    },
+    [storagekey]
+  )
 
   return { recentSearchResults, removeRecentSearch, addRecentSearch }
 }

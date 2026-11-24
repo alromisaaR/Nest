@@ -40,7 +40,9 @@ export default function GlobalSearch() {
   const searchVersionRef = useRef(0)
   const previousFocusRef = useRef<HTMLElement | null>(null)
   const shouldAutoFocus = useShouldAutoFocusSearch()
-  const { recentSearchResults, removeRecentSearch, addRecentSearch } = useRecentSearches()
+  const { recentSearchResults, removeRecentSearch, addRecentSearch } = useRecentSearches(
+    'recentSearchResults:global-search'
+  )
 
   const cleanQuery = searchQuery.trim()
   const isValidQuery = isValidSearchQuery(cleanQuery)
@@ -384,7 +386,7 @@ export default function GlobalSearch() {
     if (cleanQuery && !isValidQuery) {
       return (
         <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-          Only letters, numbers, hyphens, underscores, and spaces are allowed.
+          Only letters, numbers, hyphens, underscores, spaces, and periods are allowed.
         </div>
       )
     }
