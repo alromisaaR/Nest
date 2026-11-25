@@ -1,9 +1,12 @@
 import { isValidSearchQuery } from 'utils/helpers/searchHelpers'
 
 describe('isValidSearchQuery', () => {
-  test.each(['hello', 'hello world', 'my-project_1', 'a b c', 'React.JS', 'Node.js'])('accepts %j', (query) => {
-    expect(isValidSearchQuery(query)).toBe(true)
-  })
+  test.each(['hello', 'hello world', 'my-project_1', 'a b c', 'React.JS', 'Node.js'])(
+    'accepts %j',
+    (query) => {
+      expect(isValidSearchQuery(query)).toBe(true)
+    }
+  )
 
   test.each([
     ['tab', 'hello\tworld'],
