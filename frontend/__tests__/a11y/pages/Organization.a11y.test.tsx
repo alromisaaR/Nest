@@ -10,6 +10,10 @@ jest.mock('server/fetchAlgoliaData', () => ({
   fetchAlgoliaData: jest.fn(),
 }))
 
+jest.mock('hooks/useShouldAutoFocusSearch', () => ({
+  useShouldAutoFocusSearch: () => false,
+}))
+
 describe.each([
   { theme: 'light', name: 'light' },
   { theme: 'dark', name: 'dark' },
