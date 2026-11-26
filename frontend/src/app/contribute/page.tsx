@@ -4,11 +4,11 @@ import { useSearchPage } from 'hooks/useSearchPage'
 import React, { useState } from 'react'
 import { FaGithub, FaWandMagicSparkles } from 'react-icons/fa6'
 import type { Issue } from 'types/issue'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import { getFilteredIcons } from 'utils/utility'
 import Card from 'components/Card'
 import DialogComp from 'components/Modal'
 import SearchPageLayout from 'components/SearchPageLayout'
-import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 
 const ContributePage = () => {
   const {
