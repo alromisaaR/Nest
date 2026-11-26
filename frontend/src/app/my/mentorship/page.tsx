@@ -11,6 +11,7 @@ import { FaPlus } from 'react-icons/fa6'
 import { GetMyProgramsDocument } from 'types/__generated__/programsQueries.generated'
 
 import type { Program } from 'types/mentorship'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import AccessDeniedDisplay from 'components/AccessDeniedDisplay'
 import ActionButton from 'components/ActionButton'
 import LoadingSpinner from 'components/LoadingSpinner'
@@ -120,6 +121,7 @@ const MyMentorshipPage: React.FC = () => {
         isLoaded={!loadingPrograms}
         totalPages={totalPages}
         currentPage={page}
+        storageKey={RECENT_SEARCH_STORAGE_KEYS.programs}
         onPageChange={(p) => {
           setPage(p)
           globalThis.scrollTo({ top: 0, behavior: 'smooth' })

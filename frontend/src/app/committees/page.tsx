@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { FaRightToBracket } from 'react-icons/fa6'
 import type { Committee } from 'types/committee'
 import { getFilteredIcons, handleSocialUrls } from 'utils/utility'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import Card from 'components/Card'
 import SearchPageLayout from 'components/SearchPageLayout'
 
@@ -54,6 +55,7 @@ const CommitteesPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.committees}
       empty="No committees found"
       indexName="committees"
       isLoaded={isLoaded}

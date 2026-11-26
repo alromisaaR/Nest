@@ -3,6 +3,7 @@ import { useSearchPage } from 'hooks/useSearchPage'
 import { useRouter } from 'next/navigation'
 import { FaRightToBracket } from 'react-icons/fa6'
 import type { User } from 'types/user'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import SearchPageLayout from 'components/SearchPageLayout'
 import UserCard from 'components/UserCard'
 
@@ -54,6 +55,7 @@ const UsersPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.users}
       empty="No Users found"
       indexName="users"
       isLoaded={isLoaded}

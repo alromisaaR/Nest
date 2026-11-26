@@ -41,7 +41,7 @@ export default function GlobalSearch() {
   const previousFocusRef = useRef<HTMLElement | null>(null)
   const shouldAutoFocus = useShouldAutoFocusSearch()
   const { recentSearchResults, removeRecentSearch, addRecentSearch } = useRecentSearches(
-    'recentSearchResults:global-search'
+    'recentSearchResults:global'
   )
 
   const cleanQuery = searchQuery.trim()

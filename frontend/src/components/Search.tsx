@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchProps> = ({
   placeholder,
   initialValue = '',
   className = '',
-  storageKey = 'recentSearchResults:projects',
+  storageKey,
 }) => {
   const [searchQuery, setSearchQuery] = useState(initialValue)
   const [isFocused, setIsFocused] = useState(false)
@@ -116,6 +116,7 @@ const SearchBar: React.FC<SearchProps> = ({
     isLoaded && Boolean(cleanSearchQuery) && !isValidSearchQuery(cleanSearchQuery)
 
   const showRecentSearches =
+    Boolean(storageKey) &&
     isLoaded &&
     isFocused &&
     searchQuery.trim() === '' &&

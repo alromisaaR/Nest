@@ -8,6 +8,7 @@ interface SearchPageLayoutProps {
   totalPages: number
   currentPage: number
   searchQuery: string
+  storageKey?: string
 
   onSearch: (query: string) => void
 
@@ -27,6 +28,7 @@ const SearchPageLayout = ({
   totalPages,
   currentPage,
   searchQuery,
+  storageKey,
   onSearch,
   onPageChange,
   searchPlaceholder,
@@ -75,6 +77,7 @@ const SearchPageLayout = ({
           ))}
         <div className="flex w-full justify-center md:w-[28rem] md:shrink-0">
           <SearchBar
+            storageKey={storageKey}
             isLoaded={!isFirstLoad}
             onSearch={onSearch}
             placeholder={searchPlaceholder}

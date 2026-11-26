@@ -3,6 +3,7 @@
 import { useSearchPage } from 'hooks/useSearchPage'
 import { ProgramStatusEnum } from 'types/__generated__/graphql'
 import { Program } from 'types/mentorship'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import ProgramCard from 'components/ProgramCard'
 import SearchPageLayout from 'components/SearchPageLayout'
 
@@ -36,6 +37,7 @@ const ProgramsPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.programs}
       empty="No programs found"
       indexName="programs"
       isLoaded={isLoaded}

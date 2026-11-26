@@ -8,6 +8,7 @@ import { fetchAlgoliaData } from 'server/fetchAlgoliaData'
 import { GetChapterCountriesDocument } from 'types/__generated__/chapterQueries.generated'
 import type { AlgoliaResponse } from 'types/algolia'
 import type { Chapter } from 'types/chapter'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import { sortOptionsChapter } from 'utils/sortingOptions'
 import { getFilteredIcons, handleSocialUrls } from 'utils/utility'
 import Card from 'components/Card'
@@ -106,6 +107,7 @@ const ChaptersPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.chapters}
       empty="No chapters found"
       indexName="chapters"
       isLoaded={isLoaded}
@@ -113,26 +115,33 @@ const ChaptersPage = () => {
       onSearch={handleSearch}
       searchPlaceholder="Search for chapters..."
       searchQuery={searchQuery}
-      filterChildren={
-        <CountryFilter
-          countries={countries}
-          selectedCountry={selectedCountry}
-          onCountryChange={handleCountryChange}
-          isLoading={countriesLoading}
-        />
-      }
-      inlineSort
-      sortChildren={
-        <SortBy
-          onOrderChange={handleOrderChange}
-          onSortChange={handleSortChange}
-          selectedOrder={order}
-          selectedSortOption={sortBy}
-          sortOptions={sortOptionsChapter}
-        />
-      }
+
       totalPages={totalPages}
     >
+      {chapters.length > 0 && (
+        <>
+          <div className="mt-5 mb-4 grid w-full grid-cols-2 items-stretch gap-2 md:mt-0 md:flex md:items-center md:justify-between md:gap-2">
+            <div className="min-w-0 flex-1 sm:flex-initial">
+              <CountryFilter
+                countries={countries}
+                selectedCountry={selectedCountry}
+                onCountryChange={handleCountryChange}
+                isLoading={countriesLoading}
+              />
+            </div>
+            <div className="shrink-0">
+              <SortBy
+                onOrderChange={handleOrderChange}
+                onSortChange={handleSortChange}
+                selectedOrder={order}
+                selectedSortOption={sortBy}
+                sortOptions={sortOptionsChapter}
+              />
+            </div>
+          </div>
+        </>
+      )}
+
       {chapters.length > 0 && (
         <ChapterMapWrapper
           geoLocData={searchQuery || selectedCountry ? chapters : geoLocData}

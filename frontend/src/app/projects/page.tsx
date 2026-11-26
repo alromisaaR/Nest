@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { FaRightToBracket } from 'react-icons/fa6'
 import type { Project } from 'types/project'
 import { level } from 'utils/data'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import { sortOptionsProject } from 'utils/sortingOptions'
 import { getFilteredIcons } from 'utils/utility'
 import Card from 'components/Card'
@@ -69,6 +70,7 @@ const ProjectsPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.projects}
       empty="No projects found"
       indexName="projects"
       isLoaded={isLoaded}

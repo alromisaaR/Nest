@@ -8,6 +8,7 @@ import { getFilteredIcons } from 'utils/utility'
 import Card from 'components/Card'
 import DialogComp from 'components/Modal'
 import SearchPageLayout from 'components/SearchPageLayout'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 
 const ContributePage = () => {
   const {
@@ -72,6 +73,7 @@ const ContributePage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.issues}
       empty="No issues found"
       indexName="issues"
       isLoaded={isLoaded}

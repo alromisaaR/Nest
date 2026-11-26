@@ -4,6 +4,7 @@ import { useSearchPage } from 'hooks/useSearchPage'
 import { useRouter } from 'next/navigation'
 import { FaRightToBracket } from 'react-icons/fa6'
 import type { Organization } from 'types/organization'
+import { RECENT_SEARCH_STORAGE_KEYS } from 'utils/searchConstants'
 import SearchPageLayout from 'components/SearchPageLayout'
 import UserCard from 'components/UserCard'
 
@@ -54,6 +55,7 @@ const OrganizationPage = () => {
   return (
     <SearchPageLayout
       currentPage={currentPage}
+      storageKey={RECENT_SEARCH_STORAGE_KEYS.organizations}
       empty="No organizations found"
       indexName="organizations"
       isLoaded={isLoaded}
